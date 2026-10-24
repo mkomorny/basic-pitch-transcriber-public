@@ -1,0 +1,54 @@
+HOW TO USE: basic-pitch-transcriber
+===================================
+
+PURPOSE
+  Neural audio-to-MIDI transcription powered by Spotify's Basic Pitch model,
+  supporting both standalone local file export and integrated Ableton Live DAW
+  mode with expressive pitch bend smoothing, scaling, and monophonic cleaning.
+
+CAPABILITIES
+  - Polyphonic & Monophonic Transcription: transcribes chords, solos, runs, and note velocities
+  - Dual Operating Modes:
+    * Local File Mode: saves standard Type 1 .mid files directly on disk
+    * DAW Mode: automatically stages clips in Ableton User Library (User Library/Samples/Basic Pitch) and emits OSC clip notifications to Producer Pal / Live Actions
+  - Pitch Bend Refinement:
+    * --smooth-bends: eliminates pitch flutter while preserving musical slides
+    * --scale-bends <float>: scales bend range to match target synth pitch-wheel range
+    * --no-bends: strips all pitch bends for rigid quantization
+  - Monophonic Cleaning: --monophonic trims note overlaps for clean solo vocal/instrument lines
+  - Parameter Threshold Tuning: customize onset threshold, sustain frame threshold, and min note duration
+
+USE CASES
+  - "Transcribe this guitar audio recording into a MIDI file."
+  - "Convert this vocal take into a monophonic synth lead MIDI track in Ableton."
+  - "Extract the MIDI chords from this keyboard sample without pitch bends."
+  - "Transcribe this audio clip and stage it directly into my Ableton User Library."
+
+IDEAS
+  - Pair with Ableton Live: use --mode daw to have clips appear immediately in your Ableton browser.
+  - Pair with Serum / Vital: use --scale-bends 2.0 or 0.5 to match your synth's pitch bend wheel range.
+  - Pair with vocal-separation: separate vocal stems first, then transcribe with --monophonic --smooth-bends.
+  - Tune thresholds: increase --onset 0.65 for fast staccato plucks, decrease --onset 0.35 for soft legato strings.
+
+PROMPTS YOU CAN PASTE
+  /basic-pitch-transcriber "C:\Music\guitar_solo.wav"
+
+  Transcribe this audio file to MIDI: "C:\Recordings\piano_chords.mp3" --no-bends
+
+  Convert this vocal recording to MIDI for Ableton: "C:\Audio\vocal_lead.wav" --monophonic --smooth-bends --mode daw
+
+  Transcribe "D:\Samples\bassline.wav" with max frequency 300Hz and monophonic filtering.
+
+EXAMPLE FLOW
+  You:   /basic-pitch-transcriber "C:\Music\riff.wav" --smooth-bends
+  Model: Running Spotify Basic Pitch neural transcription...
+         ✅ Transcription Complete!
+         📁 Source: "C:\Music\riff.wav"
+         🎹 Output MIDI: "C:\Music\riff_basic_pitch.mid"
+         📊 Notes: 34 notes detected | Pitch Bends: 182 events smoothed
+
+DEFAULT GOALS IF YOU DON'T NAME ONE
+  1. Transcribe audio to a standard polyphonic .mid file using default thresholds
+  2. Save output in the same directory as the source audio file
+  3. Preserve pitch bends and note velocities faithfully
+  4. Output a summary showing note count, duration, and file link
